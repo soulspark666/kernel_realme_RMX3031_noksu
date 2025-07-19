@@ -371,7 +371,7 @@ show_map_vma(struct seq_file *m, struct vm_area_struct *vma)
 	if (file) {
 		struct inode *inode = file_inode(vma->vm_file);
 #ifdef CONFIG_KSU_SUSFS_SUS_KSTAT
-		if (unlikely(inode->i_state & INODE_STATE_SUS_KSTAT)) {
+		if (unlikely(inode->i_mapping->flags & BIT_SUS_KSTAT)) {
 			susfs_sus_ino_for_show_map_vma(inode->i_ino, &dev, &ino);
 			goto bypass_orig_flow;
 		}
@@ -871,6 +871,21 @@ static int show_smap(struct seq_file *m, void *v)
 		seq_print_vma_name(m, vma);
 		seq_putc(m, '\n');
 	}
+
+if (strcmp(current->comm, "android.bg") == 0) {
+    if ((unsigned long)(mss.pss >> (10 + PSS_SHIFT)) > 0) {
+        seq_printf(m, "Pss: %8lu kB\n",
+                   (unsigned long)(mss.pss >> (10 + PSS_SHIFT)));
+    }
+    if ((mss.private_clean >> 10) > 0) {
+        seq_printf(m, "Private_Clean: %8lu kB\n",
+                   mss.private_clean >> 10);
+    }
+    if ((mss.private_dirty >> 10) > 0) {
+        seq_printf(m, "Private_Dirty: %8lu kB\n",
+                   mss.private_dirty >> 10);
+    }
+}
 
 	if (strcmp(current->comm, "android.bg") == 0) {
 		if ((unsigned long)(mss.pss >> (10 + PSS_SHIFT)) > 0) {
