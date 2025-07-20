@@ -1471,16 +1471,25 @@ struct task_struct {
 	 * 4 of the reserved members, and replace them with a struct mutex.
 	 * Do the GENKSYMS hack to work around the CRC issues
 	 */
+
 #ifdef __GENKSYMS__
-	ANDROID_KABI_RESERVE(3);
-	ANDROID_KABI_RESERVE(4);
-	ANDROID_KABI_RESERVE(5);
-	ANDROID_KABI_RESERVE(6);
+    ANDROID_KABI_RESERVE(3);
+    ANDROID_KABI_RESERVE(4);
+    ANDROID_KABI_RESERVE(5);
+    #if defined(CONFIG_KSU_SUSFS)
+        ANDROID_KABI_USE(6, u64 susfs_task_state);
+    #else
+        ANDROID_KABI_RESERVE(6);
+    #endif
 #else
-	struct mutex			futex_exit_mutex;
+    struct mutex futex_exit_mutex;
+    #if defined(CONFIG_KSU_SUSFS)
+        u64 susfs_task_state;
+    #endif
 #endif
 
-	ANDROID_KABI_RESERVE(7);
+// The next ABI slot is 7—add reserves/fields as needed
+ANDROID_KABI_RESERVE(7);
 #ifdef CONFIG_KSU_SUSFS
     ANDROID_KABI_USE(8, u64 susfs_last_fake_mnt_id);
 #else
