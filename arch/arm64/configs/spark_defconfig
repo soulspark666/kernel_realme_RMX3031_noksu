@@ -5830,13 +5830,6 @@ CONFIG_PM_OPP=y
 # CONFIG_SLIMBUS is not set
 # CONFIG_INTERCONNECT is not set
 # CONFIG_LEGACY_ENERGY_MODEL_DT is not set
-
-#
-# KernelSU
-#
-CONFIG_KSU=y
-# CONFIG_KSU_DEBUG is not set
-
 #
 # File systems
 #
