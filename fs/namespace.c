@@ -3284,15 +3284,6 @@ struct mnt_namespace *copy_mnt_ns(unsigned long flags, struct mnt_namespace *ns,
 		q = next_mnt(q, new);
 		if (!q)
 			break;
-#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-		// Here We are only interested in processes of which original mnt namespace belongs to zygote
-		if (likely(is_zygote_pid && (q->mnt_id < DEFAULT_KSU_MNT_ID))) {
-			// q->mnt.susfs_mnt_id_backup -> original mnt_id
-			// q->mnt_id -> to be modified to the fake mnt_id
-			q->mnt.susfs_mnt_id_backup = q->mnt_id;
-			q->mnt_id = ++last_entry_mnt_id;
-		}
-#endif
 		while (p->mnt.mnt_root != q->mnt.mnt_root)
 			p = next_mnt(p, old);
 	}

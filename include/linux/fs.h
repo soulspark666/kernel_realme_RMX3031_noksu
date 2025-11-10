@@ -1846,6 +1846,9 @@ struct file_operations {
 #endif
 	ssize_t (*copy_file_range)(struct file *, loff_t, struct file *,
 			loff_t, size_t, unsigned int);
+	loff_t (*remap_file_range)(struct file *file_in, loff_t pos_in,
+				   struct file *file_out, loff_t pos_out,
+				   loff_t len, unsigned int remap_flags);
 	int (*clone_file_range)(struct file *, loff_t, struct file *, loff_t,
 			u64);
 	int (*dedupe_file_range)(struct file *, loff_t, struct file *, loff_t,
